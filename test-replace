@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+FILE_NAME=foo.txt
+FILE_TO_REPLACE=test/$FILE_NAME
+EXPECTED_DIR=test/expected-result
+
+asert_files_match() {
+  expected_file=$1
+  file_to_compare=$2
+  cmp $expected_file $file_to_compare
+  if [ $? -ne 0 ]; then
+    echo "Error replacing values"
+    exit 1
+  fi
+}
+
+cp test/sample-file/$FILE_NAME $FILE_TO_REPLACE
+./replace xxx -
+asert_files_match $EXPECTED_DIR/replace-using-contain.txt $FILE_TO_REPLACE
+rm $FILE_TO_REPLACE
+
