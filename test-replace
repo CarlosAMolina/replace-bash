@@ -14,6 +14,8 @@ assert_files_match() {
   fi
 }
 
+cp test-replace /tmp/
+
 # Test case sensitive contains
 # The replace must be done.
 cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
@@ -25,3 +27,6 @@ cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 ./replace xXx -
 assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
+
+# Avoid modifications when running ./replace
+cp /tmp/test-replace .
