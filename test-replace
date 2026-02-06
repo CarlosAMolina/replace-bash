@@ -4,7 +4,7 @@ FILE_NAME=foo.txt
 FILE_TO_REPLACE=test-files/$FILE_NAME
 EXPECTED_DIR=test-files/expected-result
 
-asert_files_match() {
+assert_files_match() {
   expected_file=$1
   file_to_compare=$2
   cmp $expected_file $file_to_compare
@@ -14,8 +14,14 @@ asert_files_match() {
   fi
 }
 
+# Test case sensitive contains
+# The replace must be done.
 cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 ./replace xxx -
-asert_files_match $EXPECTED_DIR/replace-using-contain.txt $FILE_TO_REPLACE
+assert_files_match $EXPECTED_DIR/replace-using-contain.txt $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
-
+# The replace must not be done.
+cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
+./replace xXx -
+assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
+rm $FILE_TO_REPLACE
