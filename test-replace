@@ -14,17 +14,19 @@ assert_files_match() {
   fi
 }
 
+source ./code # To call its functions
+
 cp test-replace /tmp/
 
 # Test case sensitive contains
 # The replace must be done.
 cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
-./replace xxx -
+replace xxx -
 assert_files_match $EXPECTED_DIR/replace-using-contain.txt $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
 # The replace must not be done.
 cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
-./replace xXx -
+replace xXx -
 assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
 
