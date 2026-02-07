@@ -14,26 +14,41 @@ assert_files_match() {
   fi
 }
 
+create_file_to_replace() {
+  cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
+}
+
+# Avoid modifications when running ./replace
+restore_this_file() {
+  cp /tmp/test-replace .
+}
+
 source ./code # To call its functions
 
 cp test-replace /tmp/
 
 # Test case sensitive contains
 # The replace must be done.
-cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
+create_file_to_replace
 replace xxx -
+restore_this_file
 assert_files_match $EXPECTED_DIR/replace-using-contain.txt $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
 # The replace must not be done. Upper and lowercase letters does not match
-cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
+create_file_to_replace
 replace xXx -
+restore_this_file
 assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
 # The replace must not be done. There is not exact match
-cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
+create_file_to_replace
 replace -w xxx -
+restore_this_file
 assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
-
-# Avoid modifications when running ./replace
-cp /tmp/test-replace .
+# The replace must be done. There is exact match
+create_file_to_replace
+replace -w JohnxxxDoe Charly
+restore_this_file
+assert_files_match $EXPECTED_DIR/replace-exact-match.txt $FILE_TO_REPLACE
+rm $FILE_TO_REPLACE
