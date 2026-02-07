@@ -3,8 +3,14 @@
 exclude_dirs={.git,expected-result,sample-file}
 
 function replace() {
-    old_term=$1
-    new_term=$2
+    # Store last two arguments
+    if [ $# -eq 2 ]; then
+        old_term="${@:$#-1:1}"  # Second to last argument
+        new_term="${!#}"   # Last argument
+    else
+        echo "Error: At least two arguments are required."
+        return 1
+    fi
     # TODO
     # if is_exact_match:
     # sed_command = "$sed_command -E"
