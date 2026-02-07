@@ -17,6 +17,7 @@ function replace() {
     fi
     sed_command="sed -i"
     sed_pattern="$old_term"
+    sed_replacement="$new_term"
     case $(uname) in
         Darwin)  # MacOS
             sed_command="$sed_command ''"
@@ -24,12 +25,20 @@ function replace() {
     esac
     if [ "$is_whole_word_match" == true ]; then
         sed_command="$sed_command -E"
-        sed_pattern="\<$sed_pattern\>"
+        case $(uname) in
+            Darwin)  # MacOS
+                sed_pattern="(^|[^[:alnum:]_])$sed_pattern([^[:alnum:]_]|$)"
+                sed_replacement="\1$sed_replacement\2"  # \1 and \2 are required to not lose word boundaries.
+                ;;
+            *)  # Linux.
+                sed_pattern="\<$sed_pattern\>"
+                ;;
+        esac
     fi
     for file_path in $(eval "grep -rl $old_term --exclude-dir=$exclude_dirs ."); do
         echo "[DEBUG] Replacing $file_path"
-        #echo "$sed_command 's/$sed_pattern/$new_term/g' $file_path"
-        eval "$sed_command 's/$sed_pattern/$new_term/g' $file_path"
+        #echo "$sed_command 's/$sed_pattern/$sed_replacement/g' $file_path"
+        eval "$sed_command 's/$sed_pattern/$sed_replacement/g' $file_path"
     done
     echo "[DEBUG] Done. Replaced '$old_term' with '$new_term'"
 }
