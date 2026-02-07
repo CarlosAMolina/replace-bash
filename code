@@ -26,6 +26,7 @@ function replace() {
     fi
     for file_path in $(eval "grep -rl $old_term --exclude-dir=$exclude_dirs ."); do
         echo "[DEBUG] Replacing $file_path"
+        #echo "$sed_command 's/$sed_search_pattern/$new_term/g' $file_path"
         eval "$sed_command 's/$sed_search_pattern/$new_term/g' $file_path"
     done
     echo "[DEBUG] Done. Replaced '$old_term' with '$new_term'"
