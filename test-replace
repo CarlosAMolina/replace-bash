@@ -9,7 +9,7 @@ assert_files_match() {
   file_to_compare=$2
   cmp $expected_file $file_to_compare
   if [ $? -ne 0 ]; then
-    echo "Error replacing values"
+    echo "[ERROR] replacing values"
     exit 1
   fi
 }
