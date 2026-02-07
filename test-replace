@@ -40,15 +40,15 @@ replace xXx -
 restore_this_file
 assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
-# The replace must not be done. There is not exact match
+# The replace must not be done. There is not whole word match
 create_file_to_replace
 replace -w xxx -
 restore_this_file
 assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
-# The replace must be done. There is exact match
+# The replace must be done. There is whole word match
 create_file_to_replace
 replace -w JohnxxxDoe Charly
 restore_this_file
-assert_files_match $EXPECTED_DIR/replace-exact-match.txt $FILE_TO_REPLACE
+assert_files_match $EXPECTED_DIR/replace-whole-word-match.txt $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
