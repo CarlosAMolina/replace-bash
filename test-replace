@@ -24,9 +24,14 @@ cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 replace xxx -
 assert_files_match $EXPECTED_DIR/replace-using-contain.txt $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
-# The replace must not be done.
+# The replace must not be done. Upper and lowercase letters does not match
 cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 replace xXx -
+assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
+rm $FILE_TO_REPLACE
+# The replace must not be done. There is not exact match
+cp test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
+replace -w xxx -
 assert_files_match test-files/sample-file/$FILE_NAME $FILE_TO_REPLACE
 rm $FILE_TO_REPLACE
 
