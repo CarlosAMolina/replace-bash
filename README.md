@@ -2,7 +2,7 @@
 
 # Introduction
 
-Bash script to replace words omitting desired directories.
+Replace a word in all files recursively from the current directory, omitting desired directories.
 
 ## Configuration
 
